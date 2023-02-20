@@ -23,9 +23,10 @@ def take_files():
 def send_files(bot, telegram_chat_id):
     while True:
         with open(take_files(), 'rb') as filepath:
-            print(take_files())
             bot.send_photo(chat_id=telegram_chat_id, photo=filepath)
             time.sleep(time_delay)
+        telegram.error.NetworkError('Disconnected. Try again!')
+    time.sleep(60)
 
 
 def create_parser():
