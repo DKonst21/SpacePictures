@@ -1,17 +1,19 @@
 import telegram
 import os
 import random
-import time
 import argparse
 
 from dotenv import load_dotenv
+from time import sleep
+from telegram.error import NetworkError
 
 time_delay = 4 * 60 * 60
 
 
 def take_files():
-    catalog = "images"
-    picture_title = create_parser()
+    namespace = create_parser().parse_args()
+    catalog = namespace.catalog
+    picture_title = namespace.image
 
     if picture_title:
         filepath = os.path.join(catalog, picture_title)
@@ -22,18 +24,22 @@ def take_files():
 
 def send_files(bot, telegram_chat_id):
     while True:
-        with open(take_files(), 'rb') as filepath:
-            bot.send_photo(chat_id=telegram_chat_id, photo=filepath)
-            time.sleep(time_delay)
-        telegram.error.NetworkError('Disconnected. Try again!')
-    time.sleep(60)
+        sleep(1)
+        try:
+            with open(take_files(), 'rb') as filepath:
+                bot.send_photo(chat_id=telegram_chat_id, photo=filepath)
+                time_delay = create_parser().parse_args().delay
+                sleep(time_delay)
+        except NetworkError:
+            sleep(15)
 
 
 def create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('image', nargs='?')
-    namespace = parser.parse_args()
-    return namespace.image
+    parser.add_argument('--catalog', default='images')
+    parser.add_argument('--delay', type=int, default=4*60*60)
+    return parser
 
 
 def main():
