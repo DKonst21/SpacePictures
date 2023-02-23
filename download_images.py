@@ -6,7 +6,7 @@ def create_directory(directory):
     os.makedirs(directory, exist_ok=True)
 
 
-def download_images(url, file_path, payload=''):
+def download_images(url, file_path, payload=None):
 
     response = requests.get(url, params=payload)
     response.raise_for_status()
