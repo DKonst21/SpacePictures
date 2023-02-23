@@ -7,8 +7,6 @@ from dotenv import load_dotenv
 from time import sleep
 from telegram.error import NetworkError
 
-time_delay = 4 * 60 * 60
-
 
 def take_files():
     namespace = create_parser().parse_args()
@@ -28,8 +26,8 @@ def send_files(bot, telegram_chat_id):
         try:
             with open(take_files(), 'rb') as filepath:
                 bot.send_photo(chat_id=telegram_chat_id, photo=filepath)
-                time_delay = create_parser().parse_args().delay
-                sleep(time_delay)
+                sending_delay = create_parser().parse_args().delay
+                sleep(sending_delay)
         except NetworkError:
             sleep(15)
 
