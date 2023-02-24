@@ -8,8 +8,7 @@ from time import sleep
 from telegram.error import NetworkError
 
 
-def take_files():
-    namespace = create_parser().parse_args()
+def take_files(namespace):
     catalog = namespace.catalog
     picture_title = namespace.image
 
@@ -20,13 +19,13 @@ def take_files():
     return filepath
 
 
-def send_files(bot, telegram_chat_id):
+def send_files(bot, telegram_chat_id, namespace):
     while True:
         sleep(1)
         try:
-            with open(take_files(), 'rb') as filepath:
+            with open(take_files(namespace), 'rb') as filepath:
                 bot.send_photo(chat_id=telegram_chat_id, photo=filepath)
-                sending_delay = create_parser().parse_args().delay
+                sending_delay = namespace.delay
                 sleep(sending_delay)
         except NetworkError:
             sleep(15)
@@ -44,8 +43,9 @@ def main():
     load_dotenv()
     bot = telegram.Bot(token=os.environ['TELEGRAM_BOT_TOKEN'])
     telegram_chat_id = os.environ['TELEGRAM_CHAT_ID']
-    take_files()
-    send_files(bot, telegram_chat_id)
+    namespace = create_parser().parse_args()
+    take_files(namespace)
+    send_files(bot, telegram_chat_id, namespace)
 
 
 if __name__ == '__main__':
