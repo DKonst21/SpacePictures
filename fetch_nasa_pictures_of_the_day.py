@@ -10,8 +10,8 @@ def fetch_nasa_pictures_of_the_day(api_key_parameter):
 
     nasa_pictures_of_the_day = get_list_nasa_pictures_params(api_key_parameter)
     name_picture_template = "nasa_apod{number}.jpg".format(number=nasa_pictures_of_the_day['date'])
-    picture_address = os.path.join(get_default_catalog(), name_picture_template)
-    download_images(nasa_pictures_of_the_day['url'], picture_address, api_key_parameter)
+    picture_path = os.path.join(get_default_catalog(), name_picture_template)
+    download_images(nasa_pictures_of_the_day['url'], picture_path, api_key_parameter)
 
 
 def get_list_nasa_pictures_params(api_key_parameter):
