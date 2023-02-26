@@ -8,13 +8,13 @@ from dotenv import load_dotenv
 
 def fetch_nasa_pictures_of_the_day(api_key_parameter):
 
-    nasa_pictures_of_the_day = get_list_epic_pictures_params(api_key_parameter)
+    nasa_pictures_of_the_day = get_list_nasa_pictures_params(api_key_parameter)
     name_picture_template = "nasa_apod{number}.jpg".format(number=nasa_pictures_of_the_day['date'])
-    picture_for_telegram = os.path.join(get_default_catalog(), name_picture_template)
-    download_images(nasa_pictures_of_the_day['url'], picture_for_telegram, api_key_parameter)
+    picture_address = os.path.join(get_default_catalog(), name_picture_template)
+    download_images(nasa_pictures_of_the_day['url'], picture_address, api_key_parameter)
 
 
-def get_list_epic_pictures_params(api_key_parameter):
+def get_list_nasa_pictures_params(api_key_parameter):
 
     url = "https://api.nasa.gov/planetary/apod"
     response = requests.get(url, params=api_key_parameter)

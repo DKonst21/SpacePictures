@@ -8,9 +8,9 @@ from time import sleep
 from telegram.error import NetworkError
 
 
-def take_files(namespace):
-    catalog = namespace.catalog
-    picture_title = namespace.image
+def take_files(filepath):
+    catalog = filepath.catalog
+    picture_title = filepath.image
 
     if picture_title:
         filepath = os.path.join(catalog, picture_title)
@@ -19,13 +19,13 @@ def take_files(namespace):
     return filepath
 
 
-def send_files(bot, telegram_chat_id, namespace):
+def send_files(bot, telegram_chat_id, filepath):
     while True:
         sleep(1)
         try:
-            with open(take_files(namespace), 'rb') as filepath:
-                bot.send_photo(chat_id=telegram_chat_id, photo=filepath)
-                sending_delay = namespace.delay
+            with open(take_files(filepath), 'rb') as file:
+                bot.send_photo(chat_id=telegram_chat_id, photo=file)
+                sending_delay = filepath.delay
                 sleep(sending_delay)
         except NetworkError:
             sleep(15)

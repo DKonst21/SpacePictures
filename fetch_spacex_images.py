@@ -9,8 +9,8 @@ def fetch_spacex_last_launch(launch_id, catalog):
 
     for picture_number, picture in enumerate(get_links_of_pictures(launch_id)):
         name_picture_template = "spaceX{number}.jpg".format(number=picture_number)
-        picture_for_telegram = os.path.join(catalog, name_picture_template)
-        download_images(picture, picture_for_telegram, launch_id)
+        picture_address = os.path.join(catalog, name_picture_template)
+        download_images(picture, picture_address, launch_id)
 
 
 def get_links_of_pictures(launch_id):
